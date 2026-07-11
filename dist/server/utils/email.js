@@ -5,9 +5,12 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 const BREVO_API_URL = "https://api.brevo.com/v3";
 async function sendEmail(to, subject, htmlContent) {
     if (!BREVO_API_KEY) {
-        console.error("[Brevo] BREVO_API_KEY غير موجود في متغيرات البيئة");
-        return { success: false, error: "API key missing" };
+        const error = "[Brevo] خطأ: BREVO_API_KEY غير موجود في Railway Environment Variables";
+        console.error(error);
+        return { success: false, error };
     }
+    console.log("[Brevo] محاولة إرسال إيميل إلى:", to);
+    console.log("[Brevo] Sender Email:", SENDER_EMAIL);
     try {
         const response = await fetch(`${BREVO_API_URL}/smtp/email`, {
             method: "POST",
@@ -24,9 +27,11 @@ async function sendEmail(to, subject, htmlContent) {
         });
         const data = await response.json();
         if (!response.ok) {
-            console.error("[Brevo] فشل إرسال الإيميل:", data);
+            console.error("[Brevo] فشل إرسال الإيميل - الحالة:", response.status);
+            console.error("[Brevo] تفاصيل الخطأ:", JSON.stringify(data, null, 2));
             return { success: false, error: data };
         }
+        console.log("[Brevo] تم إرسال الإيميل بنجاح!");
         return { success: true, data };
     }
     catch (err) {
