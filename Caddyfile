@@ -1,0 +1,12 @@
+{
+  admin off
+  auto_https off
+}
+
+:{$PORT} {
+  reverse_proxy localhost:{$PORT} {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+}

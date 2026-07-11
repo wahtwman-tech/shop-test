@@ -45,7 +45,7 @@ app.get("/api/health", (_req, res) => {
 // ==============================
 // Serve Frontend (Production)
 // ==============================
-const distPath = path.join(__dirname, "../../dist/client");
+const distPath = path.join(process.cwd(), "dist/client");
 app.use(express.static(distPath));
 
 // Serve index.html for client-side routing
