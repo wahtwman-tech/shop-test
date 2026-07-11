@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
 import { db } from "../db/index.js";
 import { orders, users } from "../db/schema.js";
 import { requireAdmin } from "../middleware/auth.js";
 import { sendOrderStatusEmail } from "../utils/email.js";
 const router = Router();
+// تطبيق requireAdmin على كل المسارات في هذا الملف
 router.use(requireAdmin);
 /**
  * GET /api/admin/orders
@@ -21,23 +21,24 @@ router.get("/orders", async (_req, res) => {
     });
     return res.json({ orders: allOrders });
 });
-const statusSchema = z.object({
-    status: z.enum(["pending", "processing", "delivered", "rejected"]),
-});
 /**
- * PATCH /api/admin/orders/:id/status
- * تغيير حالة الطلب (بكبسة زر) + إرسال إيميل تلقائي للعميل بالتحديث عبر Resend
+ * PUT /api/admin/orders/:id/status
+ * تغيير حالة الطلب (بكبسة زر) + إرسال إيميل تلقائي للعميل
  */
-router.patch("/orders/:id/status", async (req, res) => {
+router.put("/orders/:id/status", async (req, res) => {
     const id = Number(req.params.id);
-    const parsed = statusSchema.safeParse(req.body);
-    if (Number.isNaN(id) || !parsed.success) {
+    const { status } = req.body;
+    if (Number.isNaN(id) || !status) {
         return res.status(400).json({ message: "بيانات غير صالحة" });
+    }
+    const validStatuses = ["pending", "processing", "delivered", "rejected"];
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({ message: "حالة غير صالحة" });
     }
     try {
         const [updatedOrder] = await db
             .update(orders)
-            .set({ status: parsed.data.status })
+            .set({ status: status })
             .where(eq(orders.id, id))
             .returning();
         if (!updatedOrder) {
@@ -48,7 +49,6 @@ router.patch("/orders/:id/status", async (req, res) => {
             columns: { email: true },
         });
         if (customer) {
-            // إرسال الإشعار بشكل غير معطّل (لا ننتظره ليمنع تأخير الاستجابة، لكن نسجل الخطأ إن حدث)
             sendOrderStatusEmail(customer.email, updatedOrder.id, updatedOrder.status).catch((err) => console.error("فشل إرسال إشعار تحديث الطلب:", err));
         }
         return res.json({ message: "تم تحديث حالة الطلب", order: updatedOrder });

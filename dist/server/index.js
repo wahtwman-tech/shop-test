@@ -30,8 +30,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/admin", adminRoutes);
+// Admin routes - login/logout/setup لا تتطلب تسجيل دخول
 app.use("/api/admin", adminLoginRoutes);
+// Orders و status تتطلب تسجيل دخول أدمن
+app.use("/api/admin", adminRoutes);
 app.get("/api/health", (_req, res) => {
     res.json({ status: "ok", service: "Fayiz Shop API" });
 });

@@ -8,6 +8,7 @@ import { sendOrderStatusEmail } from "../utils/email.js";
 
 const router = Router();
 
+// تطبيق requireAdmin على كل المسارات في هذا الملف
 router.use(requireAdmin);
 
 /**
@@ -26,26 +27,27 @@ router.get("/orders", async (_req, res) => {
   return res.json({ orders: allOrders });
 });
 
-const statusSchema = z.object({
-  status: z.enum(["pending", "processing", "delivered", "rejected"]),
-});
-
 /**
- * PATCH /api/admin/orders/:id/status
- * تغيير حالة الطلب (بكبسة زر) + إرسال إيميل تلقائي للعميل بالتحديث عبر Resend
+ * PUT /api/admin/orders/:id/status
+ * تغيير حالة الطلب (بكبسة زر) + إرسال إيميل تلقائي للعميل
  */
-router.patch("/orders/:id/status", async (req, res) => {
+router.put("/orders/:id/status", async (req, res) => {
   const id = Number(req.params.id);
-  const parsed = statusSchema.safeParse(req.body);
+  const { status } = req.body as { status?: string };
 
-  if (Number.isNaN(id) || !parsed.success) {
+  if (Number.isNaN(id) || !status) {
     return res.status(400).json({ message: "بيانات غير صالحة" });
+  }
+
+  const validStatuses = ["pending", "processing", "delivered", "rejected"];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ message: "حالة غير صالحة" });
   }
 
   try {
     const [updatedOrder] = await db
       .update(orders)
-      .set({ status: parsed.data.status })
+      .set({ status: status as "pending" | "processing" | "delivered" | "rejected" })
       .where(eq(orders.id, id))
       .returning();
 
@@ -59,7 +61,6 @@ router.patch("/orders/:id/status", async (req, res) => {
     });
 
     if (customer) {
-      // إرسال الإشعار بشكل غير معطّل (لا ننتظره ليمنع تأخير الاستجابة، لكن نسجل الخطأ إن حدث)
       sendOrderStatusEmail(customer.email, updatedOrder.id, updatedOrder.status).catch((err) =>
         console.error("فشل إرسال إشعار تحديث الطلب:", err)
       );
