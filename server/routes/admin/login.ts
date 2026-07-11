@@ -62,12 +62,17 @@ router.post("/login", async (req, res) => {
       where: eq(users.email, email),
     });
 
+    console.log("[Admin Login] User found:", user);
+
     if (!user) {
       return res.status(401).json({ message: "البريد الإلكتروني أو كلمة المرور غير صحيحة" });
     }
 
     // التحقق أن المستخدم أدمن
+    console.log("[Admin Login] isAdmin value:", user.isAdmin);
+    
     if (!user.isAdmin) {
+      console.log("[Admin Login] User is not admin, rejecting...");
       return res.status(403).json({ message: "ليس لديك صلاحية الدخول للأدمن" });
     }
 
