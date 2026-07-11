@@ -48,7 +48,9 @@ async function sendEmail(to: string, subject: string, htmlContent: string) {
 }
 
 export async function sendVerificationEmail(to: string, token: string) {
-  const verifyLink = `${CLIENT_URL}/verify?token=${token}`;
+  // إزالة الـ trailing slash من CLIENT_URL لتجنب double slash
+  const baseUrl = CLIENT_URL.replace(/\/$/, '');
+  const verifyLink = `${baseUrl}/verify?token=${token}`;
 
   const htmlContent = `
     <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 480px; margin: auto;">

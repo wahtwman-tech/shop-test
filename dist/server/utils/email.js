@@ -41,7 +41,9 @@ async function sendEmail(to, subject, htmlContent) {
     }
 }
 export async function sendVerificationEmail(to, token) {
-    const verifyLink = `${CLIENT_URL}/verify?token=${token}`;
+    // إزالة الـ trailing slash من CLIENT_URL لتجنب double slash
+    const baseUrl = CLIENT_URL.replace(/\/$/, '');
+    const verifyLink = `${baseUrl}/verify?token=${token}`;
     const htmlContent = `
     <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 480px; margin: auto;">
       <h2>مرحباً بك في Fayiz Shop 🛍️</h2>
