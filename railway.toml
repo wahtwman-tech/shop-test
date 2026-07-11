@@ -1,0 +1,9 @@
+[build]
+builder = "NIXPACKS"
+nixpacksJson = { img = "nodejs_20" }
+
+[deploy]
+startCommand = "npm run start"
+healthCheckPath = "/api/health"
+restartPolicyType = "ON_FAILURE"
+restartPolicyLimit = 10
