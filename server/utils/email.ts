@@ -1,5 +1,5 @@
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const SENDER_EMAIL = process.env.SENDER_EMAIL || "noreply@fayizshop.com";
+const SENDER_EMAIL = process.env.SENDER_EMAIL || "wahtwman@gmail.com";
 const SENDER_NAME = "Fayiz Shop";
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
@@ -14,6 +14,7 @@ async function sendEmail(to: string, subject: string, htmlContent: string) {
 
   console.log("[Brevo] محاولة إرسال إيميل إلى:", to);
   console.log("[Brevo] Sender Email:", SENDER_EMAIL);
+  console.log("[Brevo] API Key length:", BREVO_API_KEY.length);
 
   try {
     const response = await fetch(`${BREVO_API_URL}/smtp/email`, {
