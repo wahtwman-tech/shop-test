@@ -182,4 +182,20 @@ router.get("/me", requireAuth, async (req, res) => {
   return res.json({ user });
 });
 
+/**
+ * POST /api/auth/become-admin
+ * جعل المستخدم الحالي Admin (للاختبار فقط)
+ * استخدم هذا الـ endpoint بعد تسجيل الدخول لجعل حسابك Admin
+ */
+router.post("/become-admin", requireAuth, async (req, res) => {
+  const adminSecret = process.env.ADMIN_SECRET || "fayiz-shop-admin-2024";
+  
+  await db
+    .update(users)
+    .set({ isAdmin: true })
+    .where(eq(users.id, req.user!.userId));
+
+  return res.json({ message: "تم منحك صلاحيات الأدمن بنجاح" });
+});
+
 export default router;

@@ -43,6 +43,68 @@ const productSchema = z.object({
 });
 
 /**
+ * POST /api/products/seed
+ * إضافة منتجات تجريبية (مؤقت - للاختبار فقط)
+ */
+router.post("/seed", async (_req, res) => {
+  const sampleProducts = [
+    {
+      nameAr: "قميص رجالي كلاسيك",
+      nameEn: "Classic Men's Shirt",
+      descriptionAr: "قميص رجالي أنيق من القطن الخالص، مناسب للمناسبات واليومي",
+      descriptionEn: "Elegant men's cotton shirt, suitable for events and daily use",
+      price: "45000",
+      stock: 50,
+      imageUrl: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400",
+    },
+    {
+      nameAr: "بنطلون جينز أزرق",
+      nameEn: "Blue Jeans",
+      descriptionAr: "بنطلون جينز مريح وعصري للرجال",
+      descriptionEn: "Comfortable and modern men's jeans",
+      price: "65000",
+      stock: 30,
+      imageUrl: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    },
+    {
+      nameAr: "حذاء رياضي",
+      nameEn: "Sports Shoes",
+      descriptionAr: "حذاء رياضي خفيف ومريح للرياضة والشراء",
+      descriptionEn: "Light and comfortable sports shoes for running and walking",
+      price: "85000",
+      stock: 25,
+      imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    },
+    {
+      nameAr: "ساعة ذكية",
+      nameEn: "Smart Watch",
+      descriptionAr: "ساعة ذكية متطورة مع شاشة AMOLED",
+      descriptionEn: "Advanced smart watch with AMOLED display",
+      price: "150000",
+      stock: 15,
+      imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",
+    },
+    {
+      nameAr: "سماعات لاسلكية",
+      nameEn: "Wireless Earbuds",
+      descriptionAr: "سماعات لاسلكية بجودة صوت عالية",
+      descriptionEn: "Wireless earbuds with high quality sound",
+      price: "75000",
+      stock: 40,
+      imageUrl: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",
+    },
+  ];
+
+  const added = [];
+  for (const p of sampleProducts) {
+    const [product] = await db.insert(products).values(p).returning();
+    added.push(product);
+  }
+
+  return res.json({ message: `تم إضافة ${added.length} منتج`, products: added });
+});
+
+/**
  * POST /api/products
  * إضافة منتج جديد (أدمن فقط)
  */

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { adminApi, AdminOrder } from '../api';
+import { adminApi, productsApi, AdminOrder } from '../api';
 import { useAuth } from '../context/AuthContext';
 
 const statusOptions = [
@@ -15,6 +15,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState<number | null>(null);
+  const [seeding, setSeeding] = useState(false);
   
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -56,6 +57,20 @@ export default function Admin() {
     }
   };
 
+  const handleSeedProducts = async () => {
+    setSeeding(true);
+    setError('');
+    
+    try {
+      const { message } = await productsApi.seed();
+      alert(message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'فشل إضافة المنتجات');
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   if (loading) {
     return <div style={styles.loading}>جارِ تحميل البيانات...</div>;
   }
@@ -87,6 +102,14 @@ export default function Admin() {
             {orders.filter(o => o.status === 'delivered').length}
           </p>
         </div>
+      </div>
+      
+      <h2 style={styles.subtitle}>إدارة المنتجات</h2>
+      
+      <div style={styles.productsSection}>
+        <button onClick={handleSeedProducts} style={styles.seedBtn} disabled={seeding}>
+          {seeding ? 'جارِ إضافة المنتجات...' : '➕ إضافة منتجات تجريبية'}
+        </button>
       </div>
       
       <h2 style={styles.subtitle}>إدارة الطلبات</h2>
@@ -194,6 +217,19 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#4361ee',
     margin: 0,
   },
+  productsSection: {
+    marginBottom: '2rem',
+  },
+  seedBtn: {
+    background: '#28a745',
+    color: '#fff',
+    padding: '0.8rem 1.5rem',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+  },
   ordersList: {
     display: 'flex',
     flexDirection: 'column',
@@ -201,8 +237,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   orderCard: {
     background: '#fff',
-    borderRadius: '12px',
     padding: '1.5rem',
+    borderRadius: '12px',
     boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
   },
   orderHeader: {

@@ -55,6 +55,9 @@ export const authApi = {
 
   me: () =>
     request<{ user: { id: number; email: string; isAdmin: boolean; isVerified: boolean } }>('/auth/me'),
+
+  becomeAdmin: () =>
+    request<{ message: string }>('/auth/become-admin', { method: 'POST' }),
 };
 
 // Products API
@@ -64,6 +67,9 @@ export const productsApi = {
 
   getOne: (id: number) =>
     request<{ product: Product }>(`/products/${id}`),
+
+  seed: () =>
+    request<{ message: string; products: Product[] }>('/products/seed', { method: 'POST' }),
 };
 
 // Cart API
