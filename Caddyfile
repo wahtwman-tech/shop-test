@@ -4,7 +4,7 @@
 }
 
 :{$PORT} {
-  reverse_proxy localhost:{$PORT} {
+  reverse_proxy localhost:{$INTERNAL_PORT} {
     transport http {
       tls_insecure_skip_verify
     }
