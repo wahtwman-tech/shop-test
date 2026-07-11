@@ -123,7 +123,7 @@ export default function Orders() {
                       <tbody>
                         {order.items.map((item) => (
                           <tr key={item.id} style={styles.tableRow}>
-                            <td>{item.product?.name_ar || `منتج #${item.productId}`}</td>
+                            <td>{item.product?.nameAr || `منتج #${item.productId}`}</td>
                             <td>{Number(item.price).toFixed(2)} د.ع</td>
                             <td>{item.quantity}</td>
                             <td>{(Number(item.price) * item.quantity).toFixed(2)} د.ع</td>

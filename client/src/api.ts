@@ -120,14 +120,14 @@ export const adminApi = {
 // Types
 export interface Product {
   id: number;
-  name_ar: string;
-  name_en: string;
-  description_ar?: string;
-  description_en?: string;
+  nameAr: string;
+  nameEn: string;
+  descriptionAr?: string;
+  descriptionEn?: string;
   price: string;
   stock: number;
-  image_url?: string;
-  created_at: string;
+  imageUrl?: string;
+  createdAt: string;
 }
 
 export interface CartItem {

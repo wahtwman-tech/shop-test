@@ -95,12 +95,12 @@ export default function Cart() {
           <div style={styles.itemsList}>
             {items.map((item) => (
               <div key={item.id} style={styles.item}>
-                {item.product.image_url && (
-                  <img src={item.product.image_url} alt={item.product.name_ar} style={styles.itemImage} />
+                {item.product.imageUrl && (
+                  <img src={item.product.imageUrl} alt={item.product.nameAr} style={styles.itemImage} />
                 )}
                 
                 <div style={styles.itemDetails}>
-                  <h3 style={styles.itemName}>{item.product.name_ar}</h3>
+                  <h3 style={styles.itemName}>{item.product.nameAr}</h3>
                   <p style={styles.itemPrice}>{Number(item.product.price).toFixed(2)} د.ع</p>
                 </div>
                 

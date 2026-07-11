@@ -8,6 +8,7 @@ import Verify from './pages/Verify';
 import Cart from './pages/Cart';
 import Orders from './pages/Orders';
 import Admin from './pages/Admin';
+import AdminLogin from './pages/AdminLogin';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
           </Routes>
         </div>
       </BrowserRouter>

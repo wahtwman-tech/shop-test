@@ -9,8 +9,9 @@ import Verify from './pages/Verify';
 import Cart from './pages/Cart';
 import Orders from './pages/Orders';
 import Admin from './pages/Admin';
+import AdminLogin from './pages/AdminLogin';
 export default function App() {
-    return (_jsx(AuthProvider, { children: _jsx(BrowserRouter, { children: _jsxs("div", { style: styles.app, children: [_jsx(Navbar, {}), _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(Products, {}) }), _jsx(Route, { path: "/product/:id", element: _jsx(ProductDetails, {}) }), _jsx(Route, { path: "/login", element: _jsx(Login, {}) }), _jsx(Route, { path: "/verify", element: _jsx(Verify, {}) }), _jsx(Route, { path: "/cart", element: _jsx(Cart, {}) }), _jsx(Route, { path: "/orders", element: _jsx(Orders, {}) }), _jsx(Route, { path: "/admin", element: _jsx(Admin, {}) })] })] }) }) }));
+    return (_jsx(AuthProvider, { children: _jsx(BrowserRouter, { children: _jsxs("div", { style: styles.app, children: [_jsx(Navbar, {}), _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(Products, {}) }), _jsx(Route, { path: "/product/:id", element: _jsx(ProductDetails, {}) }), _jsx(Route, { path: "/login", element: _jsx(Login, {}) }), _jsx(Route, { path: "/verify", element: _jsx(Verify, {}) }), _jsx(Route, { path: "/cart", element: _jsx(Cart, {}) }), _jsx(Route, { path: "/orders", element: _jsx(Orders, {}) }), _jsx(Route, { path: "/admin", element: _jsx(Admin, {}) }), _jsx(Route, { path: "/admin/login", element: _jsx(AdminLogin, {}) })] })] }) }) }));
 }
 const styles = {
     app: {

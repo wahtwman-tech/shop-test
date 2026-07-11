@@ -71,12 +71,12 @@ export default function ProductDetails() {
       <Link to="/" style={styles.backLink}>← العودة للمنتجات</Link>
       
       <div style={styles.card}>
-        {product.image_url && (
-          <img src={product.image_url} alt={product.name_ar} style={styles.image} />
+        {product.imageUrl && (
+          <img src={product.imageUrl} alt={product.nameAr} style={styles.image} />
         )}
         
         <div style={styles.details}>
-          <h1 style={styles.name}>{product.name_ar}</h1>
+          <h1 style={styles.name}>{product.nameAr}</h1>
           
           <div style={styles.priceSection}>
             <span style={styles.price}>{Number(product.price).toFixed(2)} د.ع</span>
@@ -85,8 +85,8 @@ export default function ProductDetails() {
             </span>
           </div>
           
-          {product.description_ar && (
-            <p style={styles.desc}>{product.description_ar}</p>
+          {product.descriptionAr && (
+            <p style={styles.desc}>{product.descriptionAr}</p>
           )}
           
           {product.stock > 0 ? (

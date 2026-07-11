@@ -10,6 +10,7 @@ import productRoutes from "./routes/products.js";
 import cartRoutes from "./routes/cart.js";
 import orderRoutes from "./routes/orders.js";
 import adminRoutes from "./routes/admin.js";
+import adminLoginRoutes from "./routes/admin/login.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
@@ -30,6 +31,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminLoginRoutes);
 app.get("/api/health", (_req, res) => {
     res.json({ status: "ok", service: "Fayiz Shop API" });
 });

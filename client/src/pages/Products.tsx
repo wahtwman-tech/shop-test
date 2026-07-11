@@ -46,13 +46,13 @@ export default function Products() {
       <div style={styles.grid}>
         {products.map((product) => (
           <div key={product.id} style={styles.card}>
-            {product.image_url && (
-              <img src={product.image_url} alt={product.name_ar} style={styles.image} />
+            {product.imageUrl && (
+              <img src={product.imageUrl} alt={product.nameAr} style={styles.image} />
             )}
             <div style={styles.cardBody}>
-              <h3 style={styles.name}>{product.name_ar}</h3>
-              {product.description_ar && (
-                <p style={styles.desc}>{product.description_ar.substring(0, 80)}...</p>
+              <h3 style={styles.name}>{product.nameAr}</h3>
+              {product.descriptionAr && (
+                <p style={styles.desc}>{product.descriptionAr.substring(0, 80)}...</p>
               )}
               <div style={styles.priceRow}>
                 <span style={styles.price}>{Number(product.price).toFixed(2)} د.ع</span>
